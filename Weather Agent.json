@@ -1,0 +1,90 @@
+{
+  "name": "Weather Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "weather",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -368,
+        -16
+      ],
+      "id": "188aa54d-251d-4ec3-bfdb-6721bb534919",
+      "name": "Webhook",
+      "webhookId": "47e829d1-c9b1-4383-9542-8c9ce089a010"
+    },
+    {
+      "parameters": {
+        "url": "=http://api.weatherapi.com/v1/current.json?key=405b182d55eb41048d254452252709&q={{$json[\"query\"][\"city\"]}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -144,
+        -16
+      ],
+      "id": "fba2fc8d-fc9c-4e06-9031-6804ea75554e",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"city\":\"{{ $json.location.name }}\",\n  \"temperature\":\"{{ $json.current.temp_c }}\",\n  \"condition\":\"{{ $json.current.condition.text }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        80,
+        -16
+      ],
+      "id": "437b434f-fa59-4fb8-8f2a-82c338d5f477",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2311ee3b-42dd-40ee-999d-9952877e5bf8",
+  "meta": {
+    "instanceId": "605de7989b2add94d416c8af35d0d35c7d13d9b33b04a8acbaa3dcd084acd8e8"
+  },
+  "id": "3RU5UoXiO2rPua0T",
+  "tags": []
+}

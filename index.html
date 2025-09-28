@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weather Agent</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+    input, button { padding: 10px; margin: 5px; }
+    #result { margin-top: 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <h2>Weather Info Agent</h2>
+  <input type="text" id="city" placeholder="Enter city name">
+  <button onclick="getWeather()">Get Weather</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById("city").value;
+      const response = await fetch("http://localhost:5678/webhook/weather?city=" + city);
+      const data = await response.json();
+      document.getElementById("result").innerHTML = `
+        <b>City:</b> ${data.city} <br>
+        <b>Temperature:</b> ${data.temperature} <br>
+        <b>Condition:</b> ${data.condition}
+      `;
+    }
+  </script>
+</body>
+</html>
